@@ -58,8 +58,8 @@ export function InstagramAccount() {
         <div><span className="eyebrow">CONNECTED ACCOUNT</span><h2 id="ig-heading">Instagram account</h2></div>
         {profile && (
           <div className="ig-actions">
-            <button type="button" className="reset" onClick={() => void load()} disabled={loading} data-testid="button-ig-refresh"><RefreshCw size={15} aria-hidden="true" /> Refresh</button>
-            <button type="button" className="reset" onClick={() => void disconnect()} disabled={loading} data-testid="button-ig-disconnect"><LogOut size={15} aria-hidden="true" /> Disconnect</button>
+            <button type="button" className="reset" onClick={() => void load()} disabled={loading}><RefreshCw size={15} aria-hidden="true" /> Refresh</button>
+            <button type="button" className="reset" onClick={() => void disconnect()} disabled={loading}><LogOut size={15} aria-hidden="true" /> Disconnect</button>
           </div>
         )}
       </div>
@@ -68,7 +68,7 @@ export function InstagramAccount() {
         {loading && !profile ? (
           <p className="muted">Checking Instagram connection…</p>
         ) : profile ? (
-          <div className="ig-profile" data-testid="card-ig-profile">
+          <div className="ig-profile">
             {profile.profile_picture_url
               ? <img className="ig-avatar" src={profile.profile_picture_url} alt="" referrerPolicy="no-referrer" />
               : <span className="ig-avatar ig-avatar-fallback" aria-hidden="true">{profile.username[0]?.toUpperCase()}</span>}
@@ -77,9 +77,9 @@ export function InstagramAccount() {
               <small>{[profile.name, profile.account_type?.toLowerCase().replace(/_/g, ' ')].filter(Boolean).join(' · ')}</small>
             </div>
             <dl className="ig-counts">
-              <div><dt>Followers</dt><dd data-testid="text-ig-followers">{formatCount(profile.followers_count)}</dd></div>
-              <div><dt>Following</dt><dd data-testid="text-ig-following">{formatCount(profile.follows_count)}</dd></div>
-              <div><dt>Posts</dt><dd data-testid="text-ig-posts">{formatCount(profile.media_count)}</dd></div>
+              <div><dt>Followers</dt><dd>{formatCount(profile.followers_count)}</dd></div>
+              <div><dt>Following</dt><dd>{formatCount(profile.follows_count)}</dd></div>
+              <div><dt>Posts</dt><dd>{formatCount(profile.media_count)}</dd></div>
             </dl>
           </div>
         ) : status?.configured ? (
@@ -89,14 +89,14 @@ export function InstagramAccount() {
               <strong>Connect with Instagram</strong>
               <p>See your live follower and following counts. Works with Business and Creator accounts. Optional — you never share your password with Unfollowly.</p>
             </div>
-            <a className="primary" href={INSTAGRAM_LOGIN_URL} data-testid="button-ig-connect"><Instagram size={17} aria-hidden="true" /> Connect</a>
+            <a className="primary" href={INSTAGRAM_LOGIN_URL}><Instagram size={17} aria-hidden="true" /> Connect</a>
           </div>
         ) : (
-          <p className="muted" data-testid="text-ig-unconfigured">Instagram login isn't set up on this server. Add your Meta app ID and secret to <code>.env</code> to enable it.</p>
+          <p className="muted">Instagram login isn't set up on this server. Add your Meta app ID and secret to <code>.env</code> to enable it.</p>
         )}
       </div>
 
-      {error && <div className="error" role="alert" data-testid="text-ig-error"><AlertCircle size={17} aria-hidden="true" /><span>{error}</span></div>}
+      {error && <div className="error" role="alert"><AlertCircle size={17} aria-hidden="true" /><span>{error}</span></div>}
       <div className="hint"><Info size={16} aria-hidden="true" /><span>Meta's official API only shares follower <em>counts</em>, not the list of who follows you. To see exactly who unfollowed, compare two data exports below.</span></div>
     </section>
   );

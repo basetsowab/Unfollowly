@@ -51,3 +51,20 @@ React + Vite frontend, small Express server, plain CSS.
 - `src/components/unfollowly/`: the stat, upload and Instagram account cards
 - `server/index.ts`: serves the app and handles the Instagram login flow
 - `server/instagram.ts`: calls to Meta's Instagram API
+
+## Limitations
+
+- Meta's API only shares follower counts, not follower lists, so finding who unfollowed relies on data exports.
+- An account missing from a newer export may have been renamed, deactivated or restricted rather than unfollowing.
+- Instagram login tokens are kept in server memory, so users need to reconnect after a server restart.
+
+## Future improvements
+
+- **Tests:** unit tests for `compare.ts`, the JSON/CSV/TXT parsers and username cleanup.
+- **Snapshot history:** optionally save snapshots on the device (with clear consent) to track changes over time instead of two files at a time.
+- **Follower count chart:** record the connected account's follower count each visit and show a trend line.
+- **Rename detection:** use the export's timestamps and profile links to flag likely renamed accounts instead of counting them as unfollows.
+- **Following vs. followers:** compare the "following" export too, to show who you follow that doesn't follow back.
+- **Persistent sessions:** store tokens in an encrypted database so logins survive restarts, and refresh long-lived tokens before they expire.
+- **Mobile layout and accessibility:** further testing on small screens and with screen readers.
+- **Deployment:** a one-click deploy guide (for example Render or Fly.io) with HTTPS for the Instagram login.

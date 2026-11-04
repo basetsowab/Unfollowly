@@ -5,6 +5,7 @@ import express, { type Request, type Response } from 'express';
 import {
   authorizeUrl, exchangeCode, fetchProfile, InstagramApiError, loadInstagramConfig, type LongLivedToken,
 } from './instagram';
+import { generateInsights, InsightsError, insightsConfigured, parseInsightsRequest } from './insights';
 
 try { process.loadEnvFile(); } catch { /* no .env file */ }
 
@@ -102,6 +103,19 @@ app.post('/api/instagram/logout', (req, res) => {
   res.json({ ok: true });
 });
 
+app.get('/api/insights/status', (_req, res) => {
+  res.json({ configured: insightsConfigured() });
+});
+
+app.post('/api/insights', express.json({ limit: '200kb' }), async (req, res) => {
+  try {
+    res.json(await generateInsights(parseInsightsRequest(req.body)));
+  } catch (e) {
+    const status = e instanceof InsightsError ? e.status : 502;
+    res.status(status).json({ error: e instanceof Error ? e.message : 'Could not generate insights.' });
+  }
+});
+
 if (isProd) {
   const dist = path.join(root, 'dist');
   if (!existsSync(dist)) throw new Error('Missing dist/ folder. Run "npm run build" first.');
@@ -116,4 +130,5 @@ if (isProd) {
 app.listen(port, () => {
   console.log(`Unfollowly running at ${appUrl}${isProd ? '' : ' (dev)'}`);
   if (!instagram) console.log('Instagram login disabled: set INSTAGRAM_APP_ID and INSTAGRAM_APP_SECRET in .env');
+  if (!insightsConfigured()) console.log('AI insights disabled: set MODEL_API_KEY in .env');
 });

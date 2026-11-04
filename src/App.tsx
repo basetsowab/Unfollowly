@@ -6,6 +6,7 @@ import {
 import { StatCard } from '@/components/unfollowly/stat-card';
 import { UploadCard } from '@/components/unfollowly/upload-card';
 import { InstagramAccount } from '@/components/unfollowly/instagram-account';
+import { InsightsCard } from '@/components/unfollowly/insights-card';
 import { compareSnapshots } from '@/lib/unfollowly/compare';
 import { DEMO_NEW, DEMO_OLD } from '@/lib/unfollowly/demo';
 import { saveCsv } from '@/lib/unfollowly/export-csv';
@@ -101,7 +102,7 @@ export default function App() {
         <div className="brand"><span className="brand-icon" aria-hidden="true"><Instagram size={23} /></span><span>unfollowly<span className="brand-dot">.</span></span></div>
         <div className="side-label">WORKSPACE</div>
         <div className="side-active" aria-current="page"><ChartNoAxesCombined size={19} aria-hidden="true" /> Overview</div>
-        <div className="side-note"><ShieldCheck size={19} aria-hidden="true" /><div><strong>Privacy first</strong><p>Your follower lists never leave this browser.</p></div></div>
+        <div className="side-note"><ShieldCheck size={19} aria-hidden="true" /><div><strong>Privacy first</strong><p>Comparisons run in this browser. AI insights are opt-in.</p></div></div>
         <div className="side-bottom">Built for curious creators<small>Hackathon prototype · v0.2</small></div>
       </aside>
 
@@ -187,7 +188,9 @@ export default function App() {
           </div>
         </section>
 
-        <footer><ShieldCheck size={16} aria-hidden="true" /> All analysis happens on your device. No passwords, scraping, or server uploads. <span>Unfollowly © 2026</span></footer>
+        <InsightsCard results={results} />
+
+        <footer><ShieldCheck size={16} aria-hidden="true" /> Comparisons run on your device. AI insights send only changed usernames, and only when you ask. No passwords or scraping. <span>Unfollowly © 2026</span></footer>
       </main>
     </div>
   );
